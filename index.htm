@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Powered Sentiment Analysis</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 50px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        textarea {
+            width: 100%;
+            height: 100px;
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Sentiment Analysis with AI</h1>
+        <textarea id="text-input" placeholder="Enter your text here..."></textarea>
+        <button onclick="analyzeText()">Analyze Sentiment</button>
+        <div id="result" class="result"></div>
+    </div>
+
+    <script>
+        async function analyzeText() {
+            const text = document.getElementById('text-input').value;
+            if (!text) {
+                alert("Please enter some text!");
+                return;
+            }
+
+            const response = await fetch('/analyze', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ text }),
+            });
+
+            const data = await response.json();
+            if (data.error) {
+                document.getElementById('result').innerText = data.error;
+            } else {
+                document.getElementById('result').innerHTML = `
+                    <strong>Text:</strong> ${data.text}<br>
+                    <strong>Sentiment:</strong> ${data.sentiment}<br>
+                    <strong>Confidence:</strong> ${data.confidence.toFixed(2)}
+                `;
+            }
+        }
+    </script>
+</body>
+</html>
