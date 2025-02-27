@@ -1,7 +1,5 @@
-from flask import Flask, render_template, request, jsonify, send_from_directory
+from flask import Flask, render_template, request, jsonify
 from transformers import pipeline
-
-from flask import Flask, send_from_directory
 
 app = Flask(__name__)
 
@@ -10,7 +8,7 @@ sentiment_analyzer = pipeline("sentiment-analysis")
 
 @app.route('/')
 def home():
-    return send_from_directory('.', 'index.html')
+    return render_template('index.html')
 
 @app.route('/analyze', methods=['POST'])
 def analyze():
